@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.open-meteo.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Termômetro do Café</title>
+<meta name="description" content="Indicador e tendência do café conilon e arábica, bolsas, dólar, clima, Delta T e notícias do mercado, atualizados o dia todo. Gratuito para o produtor.">
+<meta name="theme-color" content="#0B0F0D">
+<meta name="author" content="Termômetro do Café">
+<meta name="copyright" content="© 2026 Termômetro do Café. Todos os direitos reservados.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta property="og:title" content="Termômetro do Café">
+<meta property="og:description" content="Para onde vai o preço do conilon hoje? Indicador, tendência, bolsas, clima e notícias.">
+<meta property="og:image" content="icons/icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="1" y="1" width="32" height="32" rx="10" fill="#1C2420" stroke="#2E3A34"/><rect x="14" y="6" width="6" height="16" rx="3" fill="none" stroke="#F2B33D" stroke-width="1.6"/><circle cx="17" cy="24" r="4.5" fill="#F2B33D"/><rect x="15.6" y="12" width="2.8" height="10" rx="1.4" fill="#F2B33D"/></svg>
+      <div style="min-width:0">
+        <div class="brand-name">Termômetro do Café</div>
+        <div class="brand-sub" id="sub-local">Sooretama · ES</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="top-temp" id="top-temp">--°C</span>
+      <button class="icon-btn" id="btn-share-top" aria-label="Compartilhar no WhatsApp">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+      </button>
+    </div>
+  </header>
+  <main id="v-inicio" data-view>
+    <div class="seg" role="tablist" aria-label="Tipo de café">
+      <button role="tab" data-cafe="conilon" aria-selected="true">Conilon 7/8</button>
+      <button role="tab" data-cafe="arabica" aria-selected="false">Arábica Rio</button>
+    </div>
+    <section class="hero" aria-label="Termômetro do mercado">
+      <div class="hero-top">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="label" id="h-rotulo">Indicador Conilon 7/8</span>
+          <button class="info-btn" data-open-info aria-label="Sobre o indicador técnico">i</button>
+        </div>
+        <span class="live" id="h-live"><i></i><span>carregando</span></span>
+      </div>
+      <div class="hero-body">
+        <button class="thermo-btn" data-open-info aria-label="Termômetro do mercado. Toque para entender o indicador">
+          <div class="thermo3d" id="thermo">
+            <div class="th-back"></div>
+            <div class="th-tube"><div class="th-merc" id="th-merc"></div></div>
+            <div class="th-bulb"></div>
+            <div class="th-shine"></div>
+            <div class="th-scale">
+              <span style="color:#34D399">— alta forte</span>
+              <span style="color:#8FE3BE">— alta</span>
+              <span style="color:#F2B33D">— estável</span>
+              <span style="color:#FFB4A8">— baixa</span>
+              <span style="color:#FF8A7A">— baixa forte</span>
+            </div>
+          </div>
+        </button>
+        <div class="hero-num">
+          <span class="muted" style="font-size:13px">Indicador · R$/saca 60 kg</span>
+          <span class="big" id="h-valor">—</span>
+          <span class="chip" id="h-chip">—</span>
+          <span class="kv">Variação no dia <b id="h-dia">—</b></span>
+          <span class="kv">Leitura de <b id="h-at">—</b></span>
+        </div>
+      </div>
+      <p class="why" id="h-motivo">Carregando os dados do mercado.</p>
+      <div class="row2">
+        <a class="btn" href="#indicador">Ver cada movimento</a>
+        <button class="btn ghost" id="btn-share">Enviar no WhatsApp</button>
+      </div>
+    </section>
+    <section class="tiles" aria-label="Bolsas e dólar">
+      <div class="tile"><span class="label">Dólar</span><span class="v" id="t-dolar">—</span><span class="d" id="t-dolar-d"></span></div>
+      <div class="tile"><span class="label" id="t-lon-l">Londres</span><span class="v" id="t-lon">—</span><span class="d" id="t-lon-d"></span></div>
+      <div class="tile"><span class="label" id="t-ny-l">Nova York</span><span class="v" id="t-ny">—</span><span class="d" id="t-ny-d"></span></div>
+    </section>
+    <p class="note" style="margin:6px 4px 0" id="t-nota">Bolsas com 15 min de atraso.</p>
+    <section class="section stack" aria-labelledby="prev-t">
+      <h2 class="h2" id="prev-t">Próximos 7 dias</h2>
+      <div class="stack" style="gap:8px" id="dias"></div>
+      <p class="note" id="dia-detalhe"></p>
+    </section>
+    <div class="ad" aria-label="Espaço publicitário">Espaço patrocinado</div>
+    <section class="section stack" aria-labelledby="mm-t">
+      <h2 class="h2" id="mm-t" style="font-size:20px">Minuto a minuto</h2>
+      <div class="pills" id="news-tabs">
+        <button class="pill" data-cat="" aria-pressed="true">Todos</button>
+        <button class="pill" data-cat="analise" aria-pressed="false">Análises</button>
+        <button class="pill" data-cat="alerta" aria-pressed="false">Alertas</button>
+        <button class="pill" data-cat="noticia" aria-pressed="false">Notícias</button>
+        <button class="pill" data-cat="Insumos" aria-pressed="false">Insumos</button>
+        <button class="pill" data-cat="Clima" aria-pressed="false">Clima</button>
+      </div>
+      <ul class="news" id="news"></ul>
+      <p class="note">Alertas automáticos a cada movimento relevante, análise do mercado na abertura, no meio do dia e no fechamento, e manchetes dos veículos de origem com link para a matéria.</p>
+    </section>
+  </main>
+  <main id="v-indicador" data-view hidden>
+    <h1 class="h2" style="font-size:21px;margin:4px 4px 12px">Indicador e tendência</h1>
+    <div class="seg" role="tablist" aria-label="Tipo de café">
+      <button role="tab" data-cafe="conilon" aria-selected="true">Conilon 7/8</button>
+      <button role="tab" data-cafe="arabica" aria-selected="false">Arábica Rio</button>
+    </div>
+    <section class="card section">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:8px">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <span class="muted" style="font-size:12px" id="i-nome">—</span>
+          <span class="big" style="font-size:40px" id="i-valor">—</span>
+        </div>
+        <span class="chip" id="i-chip">—</span>
+      </div>
+      <svg class="chart" id="i-chart" viewBox="0 0 340 170" role="img" aria-label="Gráfico dos movimentos do físico e do indicador"></svg>
+      <div class="legend" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+        <span><i style="background:#34D399;border-radius:50%"></i>subiu</span>
+        <span><i style="background:#FF8A7A;border-radius:50%"></i>caiu</span>
+      </div>
+    </section>
+    <section class="section stack" style="gap:8px">
+      <h2 class="h2" style="font-size:17px;margin:0 4px">Cada movimento registrado</h2>
+      <div class="stack" style="gap:8px" id="i-movs"></div>
+    </section>
+    <section class="card section" style="background:#10160F;border-color:#2E3A34">
+      <h2 class="h2" style="font-size:16px;color:var(--accent)">Como ler o termômetro</h2>
+      <div class="stack" style="gap:8px;font-size:13px">
+        <span><b style="color:#34D399">Alta forte</b> · mercado aquecido, compradores puxando o preço.</span>
+        <span><b style="color:#8FE3BE">Alta</b> · viés de subida.</span>
+        <span><b style="color:#F2B33D">Estável</b> · sem direção clara.</span>
+        <span><b style="color:#FFB4A8">Baixa</b> · viés de queda.</span>
+        <span><b style="color:#FF8A7A">Baixa forte</b> · mercado pressionado.</span>
+      </div>
+      <p class="note">O indicador técnico combina o mercado físico da região, as bolsas de café e o câmbio. Não é o preço pago na prática: mostra a direção do mercado. Cada mudança fica registrada acima.</p>
+    </section>
+  </main>
+  <main id="v-clima" data-view hidden>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin:4px 4px 12px">
+      <h1 class="h2" style="font-size:21px">Clima da lavoura</h1>
+      <label class="sr" for="cidade" style="position:absolute;left:-9999px">Cidade</label>
+      <select id="cidade"></select>
+    </div>
+    <section class="wx">
+      <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><circle cx="26" cy="26" r="14" fill="#F2B33D"/><rect x="22" y="34" width="36" height="18" rx="9" fill="#C9D3CD"/></svg>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span class="t" id="w-temp">--°C</span>
+        <span style="font-size:13px;color:var(--fg-2)" id="w-desc">—</span>
+        <span class="note" id="w-extra">—</span>
+      </div>
+    </section>
+    <section class="card section" aria-labelledby="dt-t">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
+        <h2 class="h2" id="dt-t">Delta T · pulverização</h2>
+        <span class="note" style="font-size:11px">bulbo seco − bulbo úmido</span>
+      </div>
+      <div class="dt-now" id="dt-now">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <span class="label">Delta T</span>
+          <span class="v" id="dt-v">—</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+          <span class="z" id="dt-z">—</span>
+          <span style="font-size:12px;line-height:1.45;color:var(--fg-2)" id="dt-txt">—</span>
+        </div>
+      </div>
+      <div class="rng stack" style="gap:4px">
+        <label for="dt-temp"><span>Temperatura</span><span style="color:var(--hot)" id="dt-temp-l">—</span></label>
+        <input id="dt-temp" type="range" min="0" max="40" step="1" value="28">
+        <label for="dt-ur"><span>Umidade relativa</span><span style="color:var(--rain)" id="dt-ur-l">—</span></label>
+        <input id="dt-ur" type="range" min="10" max="100" step="1" value="64">
+      </div>
+      <canvas class="dt-canvas" id="dt-canvas" width="680" height="480" role="img" aria-label="Tabela Delta T com a condição marcada"></canvas>
+      <div class="legend">
+        <span><i style="background:var(--dt-ok)"></i>2 a 8: ideal</span>
+        <span><i style="background:var(--dt-mar)"></i>marginal</span>
+        <span><i style="background:var(--dt-grossa)"></i>10 a 12: só gotas grossas</span>
+        <span><i style="background:var(--dt-bad)"></i>não recomendado</span>
+      </div>
+      <div class="stack" style="gap:8px">
+        <span style="font-size:13px;font-weight:600">Delta T previsto hoje</span>
+        <div class="hours" id="dt-hours"></div>
+        <span class="note" style="font-size:11px" id="dt-hours-note">Toque num horário para ver a condição prevista.</span>
+      </div>
+    </section>
+    <section class="card section calda" aria-labelledby="calda-t">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+        <h2 class="h2" id="calda-t">Ordem da calda</h2>
+        <span class="badge">Oferecido por Agropagung</span>
+      </div>
+      <p class="note" style="color:var(--fg-2)">Sempre com o agitador ligado. Abasteça 1/3 do tanque e coloque o adjuvante; com 2/3, adicione os defensivos.</p>
+      <ol>
+        <li>Água até metade do tanque</li><li>Adjuvante</li><li>Pó molhável (PM)</li><li>Grânulos dispersíveis em água (WG/GRDA)</li>
+        <li>Dry flowable (DF)</li><li>Suspensão concentrada (SC)</li><li>Emulsão em água (EW)</li><li>Concentrado solúvel ou emulsionável (CS/CE)</li>
+        <li>Solução não aquosa concentrada (SANC)</li><li>Solução aquosa concentrada (SAC)</li><li>Fertilizantes foliares</li>
+      </ol>
+      <p class="note" style="font-size:11px">SC + PM + CE: faça pré-mistura separada antes.</p>
+    </section>
+    <section class="row2 section">
+      <div class="tile"><span class="label">Chuva no mês</span><span class="v" style="color:var(--rain)" id="w-mes">—</span><span class="d faint">estimativa por modelo</span></div>
+      <div class="tile"><span class="label">Chuva 7 dias</span><span class="v" style="color:var(--rain)" id="w-7d">—</span><span class="d faint">previsão</span></div>
+    </section>
+    <p class="note" style="margin:8px 4px 0" id="w-fonte">Previsão: Open-Meteo.</p>
+  </main>
+  <main id="v-bolsas" data-view hidden>
+    <h1 class="h2" style="font-size:21px;margin:4px 4px 4px">Bolsas e câmbio</h1>
+    <p class="note" style="margin:0 4px 12px" id="b-upd">—</p>
+    <p class="note" style="margin:0 4px 8px">Toque num item para ver o gráfico.</p>
+    <section class="card">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Item</th><th class="r">Valor</th><th class="r">Var.</th></tr></thead>
+          <tbody id="b-body"></tbody>
+        </table>
+      </div>
+    </section>
+    <section class="card section" style="background:#10160F;border-color:#2E3A34">
+      <span class="label" style="color:var(--accent)">Como convertemos</span>
+      <p class="note" style="color:var(--fg-2)">Londres (robusta): US$/t × 0,06 × dólar = R$/saca bruto, antes de impostos, frete e prêmio regional.</p>
+      <p class="note" style="color:var(--fg-2)">Nova York (arábica): ¢/lb ÷ 100 × 132,276 × dólar.</p>
+    </section>
+    <div class="ad" aria-label="Espaço publicitário">Espaço patrocinado · revenda ou cooperativa</div>
+  </main>
+  <footer class="foot">
+    <span id="f-status">—</span><br>
+    Conteúdo informativo. Não é recomendação de compra ou venda.<br>
+    © 2026 Termômetro do Café. Todos os direitos reservados. <a href="termos.html">Termos de uso</a> · <a href="privacidade.html">Privacidade</a>
+  </footer>
+</div>
+<nav class="nav" aria-label="Navegação principal">
+  <div class="nav-in">
+    <a href="#inicio" data-nav="inicio"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0z"/></svg>Início</a>
+    <a href="#indicador" data-nav="indicador"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Indicador</a>
+    <a href="#clima" data-nav="clima"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H8a5 5 0 1 1 1.4-9.8A6 6 0 0 1 21 11.5 3.8 3.8 0 0 1 17.5 19z"/></svg>Clima</a>
+    <a href="#bolsas" data-nav="bolsas"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .9-3 2s1.3 1.7 3 2 3 .9 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6v2M12 16v2"/></svg>Bolsas</a>
+  </div>
+</nav>
+<div class="modal" id="modal" hidden>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="m-t">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-family:var(--font-num);font-weight:700">i</span>
+      <h2 id="m-t">Sobre o indicador técnico</h2>
+    </div>
+    <p>O indicador técnico não é o preço pago na sua porta. Ele reúne o mercado físico da região, as bolsas de café e o câmbio num número só, para mostrar de forma simples para onde o mercado está indo: alta, estabilidade ou baixa.</p>
+    <div><div class="k" style="color:var(--accent)">Bolsas</div><p>As cotações de bolsa têm pelo menos 15 minutos de atraso.</p></div>
+    <div><div class="k" style="color:var(--down)">Aviso</div><p>Conteúdo informativo. Não é recomendação de compra, venda ou negociação. Confirme o preço com seu comprador antes de fechar negócio.</p></div>
+    <button class="btn" id="m-ok" style="letter-spacing:1px">ENTENDI</button>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

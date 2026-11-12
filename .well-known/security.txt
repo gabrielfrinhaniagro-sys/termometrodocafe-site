@@ -1,4 +1,4 @@
-Contact: mailto:[E-MAIL DE CONTATO]
+Contact: mailto:frinhaniagro@outlook.com
 Expires: 2027-11-30T23:59:00.000Z
 Preferred-Languages: pt-BR, en
 Canonical: https://termometrodocafe.com.br/.well-known/security.txt

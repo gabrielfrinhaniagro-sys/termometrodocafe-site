@@ -1,3 +1,13 @@
+# Robôs do Google (busca e AdSense) precisam ler os dados para ver o conteúdo do app
+User-agent: Googlebot
+Allow: /
+
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
 User-agent: *
 Allow: /
 Disallow: /data/

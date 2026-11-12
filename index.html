@@ -87,25 +87,29 @@
       <div class="tile"><span class="label" id="t-ny-l">Nova York</span><span class="v" id="t-ny">—</span><span class="d" id="t-ny-d"></span></div>
     </section>
     <p class="note" style="margin:6px 4px 0" id="t-nota">Bolsas com 15 min de atraso.</p>
-    <section class="section stack" aria-labelledby="prev-t">
-      <h2 class="h2" id="prev-t">Próximos 7 dias</h2>
-      <div class="stack" style="gap:8px" id="dias"></div>
-      <p class="note" id="dia-detalhe"></p>
-    </section>
     <div class="ad" aria-label="Espaço publicitário">Espaço patrocinado</div>
     <section class="section stack" aria-labelledby="mm-t">
       <h2 class="h2" id="mm-t" style="font-size:20px">Minuto a minuto</h2>
-      <div class="pills" id="news-tabs">
+      <div class="pills scroll" id="news-tabs">
         <button class="pill" data-cat="" aria-pressed="true">Todos</button>
-        <button class="pill" data-cat="analise" aria-pressed="false">Análises</button>
         <button class="pill" data-cat="alerta" aria-pressed="false">Alertas</button>
+        <button class="pill" data-cat="analise" aria-pressed="false">Análises</button>
         <button class="pill" data-cat="noticia" aria-pressed="false">Notícias</button>
+        <button class="pill" data-cat="Mercado global" aria-pressed="false">Mundo</button>
+        <button class="pill" data-cat="Tributário" aria-pressed="false">Tributário</button>
+        <button class="pill" data-cat="Câmbio e juros" aria-pressed="false">Economia</button>
+        <button class="pill" data-cat="Tecnologia" aria-pressed="false">Tecnologia</button>
+        <button class="pill" data-cat="Eventos" aria-pressed="false">Eventos</button>
         <button class="pill" data-cat="Insumos" aria-pressed="false">Insumos</button>
         <button class="pill" data-cat="Clima" aria-pressed="false">Clima</button>
       </div>
       <ul class="news" id="news"></ul>
-      <p class="note">Alertas automáticos a cada movimento relevante, análise do mercado na abertura, no meio do dia e no fechamento, e manchetes dos veículos de origem com link para a matéria.</p>
+      <p class="note">Alertas a cada movimento relevante, análise na abertura, no meio do dia e no fechamento, e notícias resumidas pela nossa equipe. Toque numa notícia para ler aqui mesmo; a fonte original fica no fim do texto.</p>
     </section>
+  </main>
+  <main id="v-noticia" data-view hidden>
+    <a class="voltar" href="#inicio" id="n-voltar">← Voltar ao minuto a minuto</a>
+    <article class="leitor" id="n-art"></article>
   </main>
   <main id="v-indicador" data-view hidden>
     <h1 class="h2" style="font-size:21px;margin:4px 4px 12px">Indicador e tendência</h1>
@@ -122,6 +126,7 @@
         <span class="chip" id="i-chip">—</span>
       </div>
       <svg class="chart" id="i-chart" viewBox="0 0 340 170" role="img" aria-label="Gráfico dos movimentos do físico e do indicador"></svg>
+      <div class="leitura-ind" id="i-leitura">Toque num ponto do gráfico ou num movimento da lista para ver o detalhe.</div>
       <div class="legend" style="grid-template-columns:repeat(2,minmax(0,1fr))">
         <span><i style="background:#34D399;border-radius:50%"></i>subiu</span>
         <span><i style="background:#FF8A7A;border-radius:50%"></i>caiu</span>
@@ -149,65 +154,103 @@
       <label class="sr" for="cidade" style="position:absolute;left:-9999px">Cidade</label>
       <select id="cidade"></select>
     </div>
-    <section class="wx">
-      <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><circle cx="26" cy="26" r="14" fill="#F2B33D"/><rect x="22" y="34" width="36" height="18" rx="9" fill="#C9D3CD"/></svg>
-      <div style="display:flex;flex-direction:column;gap:4px">
-        <span class="t" id="w-temp">--°C</span>
-        <span style="font-size:13px;color:var(--fg-2)" id="w-desc">—</span>
-        <span class="note" id="w-extra">—</span>
-      </div>
-    </section>
-    <section class="card section" aria-labelledby="dt-t">
-      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
-        <h2 class="h2" id="dt-t">Delta T · pulverização</h2>
-        <span class="note" style="font-size:11px">bulbo seco − bulbo úmido</span>
-      </div>
-      <div class="dt-now" id="dt-now">
-        <div style="display:flex;flex-direction:column;gap:2px">
-          <span class="label">Delta T</span>
-          <span class="v" id="dt-v">—</span>
+    <div class="seg seg3" role="tablist" aria-label="Clima" id="clima-tabs">
+      <button role="tab" data-ctab="previsao" aria-selected="true">Previsão</button>
+      <button role="tab" data-ctab="pulverizacao" aria-selected="false">Pulverização</button>
+      <button role="tab" data-ctab="mapa" aria-selected="false">Mapa</button>
+    </div>
+    <div data-cpanel="previsao">
+      <section class="wx section">
+        <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><circle cx="26" cy="26" r="14" fill="#F2B33D"/><rect x="22" y="34" width="36" height="18" rx="9" fill="#C9D3CD"/></svg>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span class="t" id="w-temp">--°C</span>
+          <span style="font-size:13px;color:var(--fg-2)" id="w-desc">—</span>
+          <span class="note" id="w-extra">—</span>
         </div>
-        <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
-          <span class="z" id="dt-z">—</span>
-          <span style="font-size:12px;line-height:1.45;color:var(--fg-2)" id="dt-txt">—</span>
+      </section>
+      <section class="section stack" aria-labelledby="prev-t">
+        <h2 class="h2" id="prev-t">Próximos dias</h2>
+        <div class="dias-h" id="dias"></div>
+        <div class="card" style="gap:10px">
+          <div class="hd-top"><b id="hd-tit">Hoje</b><span class="note" id="hd-res"></span></div>
+          <div class="hd-wrap"><table class="tbl hd"><thead><tr><th>Hora</th><th class="r">Temp.</th><th class="r">Chuva</th><th class="r">Umid.</th><th class="r">Orvalho</th><th class="r">Vento</th></tr></thead><tbody id="hd-body"></tbody></table></div>
         </div>
-      </div>
-      <div class="rng stack" style="gap:4px">
-        <label for="dt-temp"><span>Temperatura</span><span style="color:var(--hot)" id="dt-temp-l">—</span></label>
-        <input id="dt-temp" type="range" min="0" max="40" step="1" value="28">
-        <label for="dt-ur"><span>Umidade relativa</span><span style="color:var(--rain)" id="dt-ur-l">—</span></label>
-        <input id="dt-ur" type="range" min="10" max="100" step="1" value="64">
-      </div>
-      <canvas class="dt-canvas" id="dt-canvas" width="680" height="480" role="img" aria-label="Tabela Delta T com a condição marcada"></canvas>
-      <div class="legend">
-        <span><i style="background:var(--dt-ok)"></i>2 a 8: ideal</span>
-        <span><i style="background:var(--dt-mar)"></i>marginal</span>
-        <span><i style="background:var(--dt-grossa)"></i>10 a 12: só gotas grossas</span>
-        <span><i style="background:var(--dt-bad)"></i>não recomendado</span>
-      </div>
-      <div class="stack" style="gap:8px">
-        <span style="font-size:13px;font-weight:600">Delta T previsto hoje</span>
-        <div class="hours" id="dt-hours"></div>
-        <span class="note" style="font-size:11px" id="dt-hours-note">Toque num horário para ver a condição prevista.</span>
-      </div>
-    </section>
-    <section class="card section calda" aria-labelledby="calda-t">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
-        <h2 class="h2" id="calda-t">Ordem da calda</h2>
-        <span class="badge">Oferecido por Agropagung</span>
-      </div>
-      <p class="note" style="color:var(--fg-2)">Sempre com o agitador ligado. Abasteça 1/3 do tanque e coloque o adjuvante; com 2/3, adicione os defensivos.</p>
-      <ol>
-        <li>Água até metade do tanque</li><li>Adjuvante</li><li>Pó molhável (PM)</li><li>Grânulos dispersíveis em água (WG/GRDA)</li>
-        <li>Dry flowable (DF)</li><li>Suspensão concentrada (SC)</li><li>Emulsão em água (EW)</li><li>Concentrado solúvel ou emulsionável (CS/CE)</li>
-        <li>Solução não aquosa concentrada (SANC)</li><li>Solução aquosa concentrada (SAC)</li><li>Fertilizantes foliares</li>
-      </ol>
-      <p class="note" style="font-size:11px">SC + PM + CE: faça pré-mistura separada antes.</p>
-    </section>
-    <section class="row2 section">
-      <div class="tile"><span class="label">Chuva no mês</span><span class="v" style="color:var(--rain)" id="w-mes">—</span><span class="d faint">estimativa por modelo</span></div>
-      <div class="tile"><span class="label">Chuva 7 dias</span><span class="v" style="color:var(--rain)" id="w-7d">—</span><span class="d faint">previsão</span></div>
-    </section>
+        <p class="note" id="dia-detalhe"></p>
+      </section>
+      <section class="row2 section">
+        <div class="tile"><span class="label">Chuva no mês</span><span class="v" style="color:var(--rain)" id="w-mes">—</span><span class="d faint">estimativa por modelo</span></div>
+        <div class="tile"><span class="label">Chuva 7 dias</span><span class="v" style="color:var(--rain)" id="w-7d">—</span><span class="d faint">previsão</span></div>
+      </section>
+    </div>
+    <div data-cpanel="pulverizacao" hidden>
+      <section class="card section" aria-labelledby="dt-t">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px">
+          <h2 class="h2" id="dt-t">Delta T · pulverização</h2>
+          <span class="note" style="font-size:11px">bulbo seco − bulbo úmido</span>
+        </div>
+        <div class="dt-now" id="dt-now">
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <span class="label">Delta T</span>
+            <span class="v" id="dt-v">—</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+            <span class="z" id="dt-z">—</span>
+            <span style="font-size:12px;line-height:1.45;color:var(--fg-2)" id="dt-txt">—</span>
+          </div>
+        </div>
+        <div class="rng stack" style="gap:4px">
+          <label for="dt-temp"><span>Temperatura</span><span style="color:var(--hot)" id="dt-temp-l">—</span></label>
+          <input id="dt-temp" type="range" min="0" max="40" step="1" value="28">
+          <label for="dt-ur"><span>Umidade relativa</span><span style="color:var(--rain)" id="dt-ur-l">—</span></label>
+          <input id="dt-ur" type="range" min="10" max="100" step="1" value="64">
+        </div>
+        <canvas class="dt-canvas" id="dt-canvas" width="680" height="480" role="img" aria-label="Tabela Delta T com a condição marcada"></canvas>
+        <div class="legend">
+          <span><i style="background:var(--dt-ok)"></i>2 a 8: ideal</span>
+          <span><i style="background:var(--dt-mar)"></i>marginal</span>
+          <span><i style="background:var(--dt-grossa)"></i>10 a 12: só gotas grossas</span>
+          <span><i style="background:var(--dt-bad)"></i>não recomendado</span>
+        </div>
+        <div class="stack" style="gap:8px">
+          <span style="font-size:13px;font-weight:600">Delta T previsto hoje</span>
+          <div class="hours" id="dt-hours"></div>
+          <span class="note" style="font-size:11px" id="dt-hours-note">Toque num horário para ver a condição prevista.</span>
+        </div>
+      </section>
+      <section class="card section calda" aria-labelledby="calda-t">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+          <h2 class="h2" id="calda-t">Ordem da calda</h2>
+          <span class="badge">Oferecido por Agropagung</span>
+        </div>
+        <p class="note" style="color:var(--fg-2)">Sempre com o agitador ligado. Abasteça 1/3 do tanque e coloque o adjuvante; com 2/3, adicione os defensivos.</p>
+        <ol>
+          <li>Água até metade do tanque</li><li>Adjuvante</li><li>Pó molhável (PM)</li><li>Grânulos dispersíveis em água (WG/GRDA)</li>
+          <li>Dry flowable (DF)</li><li>Suspensão concentrada (SC)</li><li>Emulsão em água (EW)</li><li>Concentrado solúvel ou emulsionável (CS/CE)</li>
+          <li>Solução não aquosa concentrada (SANC)</li><li>Solução aquosa concentrada (SAC)</li><li>Fertilizantes foliares</li>
+        </ol>
+        <p class="note" style="font-size:11px">SC + PM + CE: faça pré-mistura separada antes.</p>
+      </section>
+    </div>
+    <div data-cpanel="mapa" hidden>
+      <section class="card section" aria-labelledby="mapa-t">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+          <h2 class="h2" id="mapa-t">Mapa do tempo</h2>
+          <span class="note" style="font-size:11px" id="mapa-local">—</span>
+        </div>
+        <div class="pills" id="mapa-camadas" role="group" aria-label="Camada do mapa">
+          <button class="pill" data-camada="rain" aria-pressed="true">Chuva hoje</button>
+          <button class="pill" data-camada="rain7" aria-pressed="false">Chuva 7 dias</button>
+          <button class="pill" data-camada="temp" aria-pressed="false">Temperatura</button>
+          <button class="pill" data-camada="wind" aria-pressed="false">Vento</button>
+          <button class="pill" data-camada="rh" aria-pressed="false">Umidade</button>
+        </div>
+        <canvas class="mapa-cv" id="mapa-cv" width="680" height="900" role="img" aria-label="Mapa do norte do Espírito Santo com a camada escolhida"></canvas>
+        <div class="mapa-leg"><span id="mapa-min">0</span><i id="mapa-grad"></i><span id="mapa-max">0</span></div>
+        <p class="note" id="mapa-ponto">Toque no mapa para ver o valor naquele ponto.</p>
+        <a class="btn ghost" id="mapa-link" href="https://www.windy.com/" target="_blank" rel="noopener noreferrer nofollow">Ver radar e satélite ao vivo no Windy</a>
+        <p class="note" style="font-size:11px" id="mapa-nota">Mapa próprio, desenhado com a previsão do Open-Meteo para o norte do Espírito Santo. Litoral esquemático.</p>
+      </section>
+    </div>
     <p class="note" style="margin:8px 4px 0" id="w-fonte">Previsão: Open-Meteo.</p>
   </main>
   <main id="v-bolsas" data-view hidden>

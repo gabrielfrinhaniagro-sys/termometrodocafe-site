@@ -4,5 +4,11 @@
   "at": "2026-11-16T07:10:11-03:00",
   "imagem": "data/cartao-abertura.png?v=mwj3rzkv",
   "texto": "🌅 Londres abriu em queda. O físico vai segurar hoje?\n☕ Indicador Conilon 7/8: R$ 912,49 (−0,72%)\n👉 termometrodocafe.com.br/zap"
+ },
+ "fechamento": {
+  "dia": "2026-11-16",
+  "at": "2026-11-16T17:06:16-03:00",
+  "imagem": "data/cartao-fechamento.png?v=mwjp45jv",
+  "texto": "🌇 Londres caiu, mas o físico subiu. Sabe por quê?\n☕ Conilon 7/8: R$ 929,00 (+0,54%)\n👉 termometrodocafe.com.br/zap"
  }
 }

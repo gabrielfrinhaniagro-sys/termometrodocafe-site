@@ -12,6 +12,14 @@
   function bloco(nome, c) {
     var aviso = el('p', { class: 'ok' });
     var img = el('img', { src: '/' + c.imagem, alt: 'Cartão de ' + nome.toLowerCase() + ' do Termômetro do Café' });
+    // Se a imagem ainda estiver sendo publicada, tenta de novo a cada 5 segundos (até 6 vezes)
+    var tentativas = 0;
+    img.addEventListener('error', function () {
+      if (tentativas++ >= 6) { aviso.textContent = 'A imagem ainda está sendo publicada. Recarregue a página em 1 minuto.'; return; }
+      aviso.textContent = 'Carregando a imagem…';
+      setTimeout(function () { img.src = '/' + c.imagem + (c.imagem.indexOf('?') >= 0 ? '&' : '?') + 't=' + Date.now(); }, 5000);
+    });
+    img.addEventListener('load', function () { if (aviso.textContent === 'Carregando a imagem…') aviso.textContent = ''; });
     var share = el('button', { class: 'pri', type: 'button', text: 'Compartilhar' });
     var baixar = el('a', { class: 'bt', href: '/' + c.imagem, download: 'termometro-' + nome.toLowerCase() + '-' + c.dia + '.png', text: 'Baixar imagem' });
     var copiar = el('button', { type: 'button', text: 'Copiar texto' });
